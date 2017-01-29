@@ -25,33 +25,41 @@ while True:
   print("Button Status:")
   GPIO.output(POSE_LED2,True)
   print(GPIO.input(SWITCH))
+  
+  # Is button pressed?
   if (GPIO.input(SWITCH)):
     snap = 0
     GPIO.output(POSE_LED2, False)
+    
+    # Make 3 Photos
     while snap < 3:
       print("pose!")
-      GPIO.output(BUTTON_LED, False)
-      GPIO.output(POSE_LED1, True)
+      GPIO.output(BUTTON_LED, False) # BUTTON LED OFF!
+      GPIO.output(POSE_LED1, True) # Pose LED ON!
       time.sleep(1.5)
-      for i in range(5):
+      for i in range(5): # Some fancy blinking
         GPIO.output(POSE_LED2, False)
         time.sleep(0.4)
         GPIO.output(POSE_LED2, True)
         time.sleep(0.4)
-      for i in range(20):
+      for i in range(20):# faster fancy blinking
         GPIO.output(POSE_LED3, False)
         time.sleep(0.1)
         GPIO.output(POSE_LED3, True)
         time.sleep(0.1)
       print("SNAP")
+      
+      # Make a Photo
       gpout = subprocess.check_output("gphoto2 --capture-image-and-download --filename /home/pi/photobooth_images/photobooth%H%M%S.jpg", stderr=subprocess.STDOUT, shell=True)
       print(gpout)
+      
+      # Turn LEDs off for next round
       GPIO.output(POSE_LED2,False)
       GPIO.output(POSE_LED3,False)	
       GPIO.output(POSE_LED1, False)
 
       if "ERROR" not in gpout: 
-        snap += 1
+        snap += 1 # How many photos?
       time.sleep(0.5)
     print("please wait while your photos print...")
     
