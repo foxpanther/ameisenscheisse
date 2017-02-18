@@ -2,5 +2,5 @@
 
 ## install
 Needs:
-gphoto2
-cups
+- gphoto2
+- cups
